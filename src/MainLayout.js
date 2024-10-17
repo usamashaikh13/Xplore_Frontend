@@ -103,8 +103,8 @@ const MainLayout = ({ onLogout, username }) => {
           <Routes>
             <Route path="/" element={<Navigate to="/overview" />} />
             <Route path="/overview" element={<OverviewPage username={username} />} />
-            <Route path="/book-slots" element={<BookSlotsPage interviewerName={username} onSlotBooked={handleSlotBooked} />} />
-            <Route path="/view-slots" element={<ViewSlotsPage bookedSlots={bookedSlots} onDeleteSlot={handleDeleteSlot} onEditSlot={handleEditSlot} />} />
+            <Route path="/book-slots" element={<BookSlotsPage interviewerName={username} />} />
+            <Route path="/view-slots" element={<ViewSlotsPage bookedSlots={bookedSlots} setBookedSlots={setBookedSlots} />} />
             <Route path="/account-info" element={<AccountInfoPage />} />
           </Routes>
         </Box>
