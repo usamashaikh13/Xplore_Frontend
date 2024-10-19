@@ -1,29 +1,30 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router } from 'react-router-dom';
 import MainLayout from './MainLayout';
 import LoginPage from './LoginPage';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [username, setUsername] = useState('');
+  const [user, setUser] = useState(null);
+  const [users, setUsers] = useState([]); // Initialize users as an empty array
 
-  const handleLogin = (user) => {
-    setUsername(user);
-    setIsLoggedIn(true);
+  const handleLogin = (username, role) => {
+    setUser({ username, role });
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUsername('');
+    setUser(null);
   };
 
   return (
-    <div>
-      {isLoggedIn ? (
-        <MainLayout onLogout={handleLogout} username={username} />
-      ) : (
-        <LoginPage onLogin={handleLogin} />
-      )}
-    </div>
+    <Router>
+      <div>
+        {user ? (
+          <MainLayout onLogout={handleLogout} user={user} users={users} setUsers={setUsers} />
+        ) : (
+          <LoginPage onLogin={handleLogin} />
+        )}
+      </div>
+    </Router>
   );
 }
 

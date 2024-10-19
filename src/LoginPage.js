@@ -8,12 +8,16 @@ const LoginPage = ({ onLogin }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    // Hardcoded login credentials
-    const validUsername = 'Akash';
-    const validPassword = 'password';
+    
+    // Define valid credentials for different roles
+    const users = {
+      admin: { password: 'adminPassword', role: 'admin' },
+      akash: { password: 'password', role: 'interviewer' },
+    };
 
-    if (username === validUsername && password === validPassword) {
-      onLogin(username);
+    // Check if the user exists and the password is correct
+    if (users[username] && users[username].password === password) {
+      onLogin(username, users[username].role); // Pass username and role
     } else {
       alert('Invalid login credentials');
     }

@@ -1,39 +1,20 @@
-import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Box, CssBaseline, Drawer, List, ListItem, ListItemText, Avatar, Divider, ListItemIcon } from '@mui/material';
-import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
+import React from 'react';
+import { AppBar, Toolbar, Typography, Button, Box, CssBaseline, Drawer, List, ListItem, ListItemText, Avatar, Divider } from '@mui/material';
+import { Route, Routes, Link, Navigate } from 'react-router-dom';
+import AddUserPage from './AddUserPage';
+import AdminOverviewPage from './AdminOverviewPage';
 import OverviewPage from './OverviewPage';
 import BookSlotsPage from './BookSlotsPage';
 import ViewSlotsPage from './ViewSlotsPage';
 import AccountInfoPage from './AccountInfoPage';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import BookIcon from '@mui/icons-material/Book';
-import EventNoteIcon from '@mui/icons-material/EventNote';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
+import UploadProfilesPage from './UploadProfilesPage'; // New import
+import DownloadReportsPage from './DownloadReportsPage'; // New import
 
 const drawerWidth = 240;
 
-const MainLayout = ({ onLogout, username }) => {
-  const [bookedSlots, setBookedSlots] = useState([]);
-
-  const handleSlotBooked = (slot) => {
-    setBookedSlots([...bookedSlots, slot]);
-  };
-
-  const handleDeleteSlot = (index) => {
-    const newSlots = bookedSlots.filter((_, i) => i !== index);
-    setBookedSlots(newSlots);
-  };
-
-  const handleEditSlot = (updatedSlot) => {
-    const newSlots = bookedSlots.map((slot, index) =>
-      index === updatedSlot.index ? updatedSlot : slot
-    );
-    setBookedSlots(newSlots);
-  };
-
+const MainLayout = ({ onLogout, user, users, setUsers }) => {
   return (
-    <Router>
+    <>
       <CssBaseline />
       <Box sx={{ display: 'flex' }}>
         <Drawer
@@ -41,13 +22,7 @@ const MainLayout = ({ onLogout, username }) => {
           sx={{
             width: drawerWidth,
             flexShrink: 0,
-            [`& .MuiDrawer-paper`]: { 
-              width: drawerWidth, 
-              boxSizing: 'border-box', 
-              backgroundColor: '#e0f7fa', 
-              color: '#006064', 
-              boxShadow: '2px 0 5px rgba(0,0,0,0.1)' 
-            },
+            [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
           }}
         >
           <Toolbar>
@@ -56,60 +31,77 @@ const MainLayout = ({ onLogout, username }) => {
           <Divider />
           <Box sx={{ overflow: 'auto' }}>
             <List>
-              <ListItem button component={Link} to="/overview">
-                <ListItemIcon>
-                  <DashboardIcon sx={{ color: '#006064' }} />
-                </ListItemIcon>
-                <ListItemText primary="Overview" />
-              </ListItem>
-              <ListItem button component={Link} to="/book-slots">
-                <ListItemIcon>
-                  <BookIcon sx={{ color: '#006064' }} />
-                </ListItemIcon>
-                <ListItemText primary="Book My Slots" />
-              </ListItem>
-              <ListItem button component={Link} to="/view-slots">
-                <ListItemIcon>
-                  <EventNoteIcon sx={{ color: '#006064' }} />
-                </ListItemIcon>
-                <ListItemText primary="View My Slots" />
-              </ListItem>
-              <ListItem button component={Link} to="/account-info">
-                <ListItemIcon>
-                  <AccountCircleIcon sx={{ color: '#006064' }} />
-                </ListItemIcon>
-                <ListItemText primary="Account Info" />
-              </ListItem>
+              {/* Admin specific links */}
+              {user.role === 'admin' && (
+                <>
+                  <ListItem button component={Link} to="/add-user">
+                    <ListItemText primary="Add User" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/admin-overview">
+                    <ListItemText primary="Admin Overview" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/upload-profiles">
+                    <ListItemText primary="Upload Profiles" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/download-reports">
+                    <ListItemText primary="Download Reports" />
+                  </ListItem>
+                </>
+              )}
+              {/* Interviewer specific links */}
+              {user.role === 'interviewer' && (
+                <>
+                  <ListItem button component={Link} to="/overview">
+                    <ListItemText primary="Overview" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/book-slots">
+                    <ListItemText primary="Book My Slots" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/view-slots">
+                    <ListItemText primary="View My Slots" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/account-info">
+                    <ListItemText primary="Account Info" />
+                  </ListItem>
+                </>
+              )}
             </List>
           </Box>
         </Drawer>
         <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, backgroundColor: '#006064' }}>
+          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
             <Toolbar>
               <Typography variant="h6" noWrap component="div">
                 XploRE
               </Typography>
-              <Button 
-                color="inherit" 
-                onClick={onLogout} 
-                startIcon={<LogoutIcon />} 
-                sx={{ marginLeft: 'auto', backgroundColor: '#004d40', '&:hover': { backgroundColor: '#00332c' } }}
-              >
+              <Button color="inherit" onClick={onLogout} sx={{ marginLeft: 'auto' }}>
                 Logout
               </Button>
             </Toolbar>
           </AppBar>
           <Toolbar />
           <Routes>
-            <Route path="/" element={<Navigate to="/overview" />} />
-            <Route path="/overview" element={<OverviewPage username={username} />} />
-            <Route path="/book-slots" element={<BookSlotsPage interviewerName={username} />} />
-            <Route path="/view-slots" element={<ViewSlotsPage bookedSlots={bookedSlots} setBookedSlots={setBookedSlots} />} />
-            <Route path="/account-info" element={<AccountInfoPage />} />
+            <Route path="/" element={<Navigate to={user.role === 'admin' ? '/admin-overview' : '/overview'} />} />
+            {user.role === 'admin' && (
+              <>
+                <Route path="/add-user" element={<AddUserPage users={users} setUsers={setUsers} />} />
+                <Route path="/admin-overview" element={<AdminOverviewPage users={users} setUsers={setUsers} />} />
+                <Route path="/upload-profiles" element={<UploadProfilesPage />} /> {/* New route */}
+                <Route path="/download-reports" element={<DownloadReportsPage />} /> {/* New route */}
+              </>
+            )}
+            {user.role === 'interviewer' && (
+              <>
+                <Route path="/overview" element={<OverviewPage />} />
+                <Route path="/book-slots" element={<BookSlotsPage />} />
+                <Route path="/view-slots" element={<ViewSlotsPage />} />
+                <Route path="/account-info" element={<AccountInfoPage />} />
+              </>
+            )}
           </Routes>
         </Box>
       </Box>
-    </Router>
+    </>
   );
 };
 
