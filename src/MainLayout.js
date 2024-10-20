@@ -34,12 +34,13 @@ const MainLayout = ({ onLogout, user, users, setUsers }) => {
               {/* Admin specific links */}
               {user.role === 'admin' && (
                 <>
+                <ListItem button component={Link} to="/admin-overview">
+                    <ListItemText primary="Admin Overview" />
+                  </ListItem>
                   <ListItem button component={Link} to="/add-user">
                     <ListItemText primary="Add User" />
                   </ListItem>
-                  <ListItem button component={Link} to="/admin-overview">
-                    <ListItemText primary="Admin Overview" />
-                  </ListItem>
+                  
                   <ListItem button component={Link} to="/upload-profiles">
                     <ListItemText primary="Upload Profiles" />
                   </ListItem>
