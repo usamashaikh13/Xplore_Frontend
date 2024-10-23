@@ -7,8 +7,13 @@ import OverviewPage from './OverviewPage';
 import BookSlotsPage from './BookSlotsPage';
 import ViewSlotsPage from './ViewSlotsPage';
 import AccountInfoPage from './AccountInfoPage';
-import UploadProfilesPage from './UploadProfilesPage'; // New import
-import DownloadReportsPage from './DownloadReportsPage'; // New import
+import UploadProfilesPage from './UploadProfilesPage';
+import DownloadReportsPage from './DownloadReportsPage';
+import OverviewRecruitmentPage from './recruitment/OverviewRecruitmentPage';
+import ReserveSlotPage from './recruitment/ReserveSlotPage';
+import FreeSlotPage from './recruitment/FreeSlotPage';
+import BookedSlotPage from './recruitment/BookedSlotPage';
+import RequestSlotPage from './recruitment/RequestSlotPage';
 
 const drawerWidth = 240;
 
@@ -31,16 +36,14 @@ const MainLayout = ({ onLogout, user, users, setUsers }) => {
           <Divider />
           <Box sx={{ overflow: 'auto' }}>
             <List>
-              {/* Admin specific links */}
               {user.role === 'admin' && (
                 <>
-                <ListItem button component={Link} to="/admin-overview">
+                  <ListItem button component={Link} to="/admin-overview">
                     <ListItemText primary="Admin Overview" />
                   </ListItem>
                   <ListItem button component={Link} to="/add-user">
                     <ListItemText primary="Add User" />
                   </ListItem>
-                  
                   <ListItem button component={Link} to="/upload-profiles">
                     <ListItemText primary="Upload Profiles" />
                   </ListItem>
@@ -49,7 +52,6 @@ const MainLayout = ({ onLogout, user, users, setUsers }) => {
                   </ListItem>
                 </>
               )}
-              {/* Interviewer specific links */}
               {user.role === 'interviewer' && (
                 <>
                   <ListItem button component={Link} to="/overview">
@@ -63,6 +65,25 @@ const MainLayout = ({ onLogout, user, users, setUsers }) => {
                   </ListItem>
                   <ListItem button component={Link} to="/account-info">
                     <ListItemText primary="Account Info" />
+                  </ListItem>
+                </>
+              )}
+              {user.role === 'recruiter' && (
+                <>
+                  <ListItem button component={Link} to="/overview">
+                    <ListItemText primary="Overview" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/reserve-slot">
+                    <ListItemText primary="Reserve Slot" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/free-slot">
+                    <ListItemText primary="Free Slot" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/booked-slot">
+                    <ListItemText primary="Booked Slot" />
+                  </ListItem>
+                  <ListItem button component={Link} to="/request-slot">
+                    <ListItemText primary="Request Slot" />
                   </ListItem>
                 </>
               )}
@@ -82,13 +103,13 @@ const MainLayout = ({ onLogout, user, users, setUsers }) => {
           </AppBar>
           <Toolbar />
           <Routes>
-            <Route path="/" element={<Navigate to={user.role === 'admin' ? '/admin-overview' : '/overview'} />} />
+            <Route path="/" element={<Navigate to={user.role === 'admin' ? '/admin-overview' : user.role === 'interviewer' ? '/overview' : '/overview'} />} />
             {user.role === 'admin' && (
               <>
                 <Route path="/add-user" element={<AddUserPage users={users} setUsers={setUsers} />} />
                 <Route path="/admin-overview" element={<AdminOverviewPage users={users} setUsers={setUsers} />} />
-                <Route path="/upload-profiles" element={<UploadProfilesPage />} /> {/* New route */}
-                <Route path="/download-reports" element={<DownloadReportsPage />} /> {/* New route */}
+                <Route path="/upload-profiles" element={<UploadProfilesPage />} />
+                <Route path="/download-reports" element={<DownloadReportsPage />} />
               </>
             )}
             {user.role === 'interviewer' && (
@@ -97,6 +118,15 @@ const MainLayout = ({ onLogout, user, users, setUsers }) => {
                 <Route path="/book-slots" element={<BookSlotsPage />} />
                 <Route path="/view-slots" element={<ViewSlotsPage />} />
                 <Route path="/account-info" element={<AccountInfoPage />} />
+              </>
+            )}
+            {user.role === 'recruiter' && (
+              <>
+                <Route path="/overview" element={<OverviewRecruitmentPage />} />
+                <Route path="/reserve-slot" element={<ReserveSlotPage />} />
+                <Route path="/free-slot" element={<FreeSlotPage />} />
+                <Route path="/booked-slot" element={<BookedSlotPage />} />
+                <Route path="/request-slot" element={<RequestSlotPage />} />
               </>
             )}
           </Routes>

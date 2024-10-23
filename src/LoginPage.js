@@ -13,6 +13,7 @@ const LoginPage = ({ onLogin }) => {
     const users = {
       admin: { password: 'adminPassword', role: 'admin' },
       akash: { password: 'password', role: 'interviewer' },
+      recruiter: { password: 'recruiterPassword', role: 'recruiter' }, // Added recruiter role
     };
 
     // Check if the user exists and the password is correct
