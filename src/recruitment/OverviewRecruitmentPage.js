@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { Box, Typography, Grid, Card, CardContent, IconButton } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, IconButton, Divider } from '@mui/material';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import GroupIcon from '@mui/icons-material/Group';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -74,7 +74,7 @@ const OverviewRecruitmentPage = () => {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'top',
+        position: 'bottom',
       },
       title: {
         display: true,
@@ -93,15 +93,15 @@ const OverviewRecruitmentPage = () => {
   };
 
   const cards = [
-    { title: 'Total Candidates', value: totalCandidates, icon: <GroupIcon />, color: '#1E88E5' },
-    { title: 'Total Scheduled Candidates', value: totalScheduledCandidates, icon: <CalendarTodayIcon />, color: '#43A047' },
-    { title: 'Total Pending Candidates', value: totalPendingCandidates, icon: <HourglassEmptyIcon />, color: '#FB8C00' },
-    { title: 'L1 Scheduled Candidates', value: l1ScheduledCandidates, icon: <CalendarTodayIcon />, color: '#8E24AA' },
-    { title: 'L1 Pending Candidates', value: l1PendingCandidates, icon: <HourglassEmptyIcon />, color: '#FFB300' },
-    { title: 'L2 Scheduled Candidates', value: l2ScheduledCandidates, icon: <CalendarTodayIcon />, color: '#388E3C' },
-    { title: 'L2 Pending Candidates', value: l2PendingCandidates, icon: <HourglassEmptyIcon />, color: '#FFB300' },
-    { title: 'Selected Candidates', value: selectedCandidates, icon: <CheckCircleIcon />, color: '#FFD700' },
-    { title: 'Rejected Candidates', value: rejectedCandidates, icon: <CancelIcon />, color: '#E53935' },
+    { title: 'Total Candidates', value: totalCandidates, icon: <GroupIcon fontSize="medium" />, color: '#1E88E5' },
+    { title: 'Total Scheduled Candidates', value: totalScheduledCandidates, icon: <CalendarTodayIcon fontSize="medium" />, color: '#43A047' },
+    { title: 'Total Pending Candidates', value: totalPendingCandidates, icon: <HourglassEmptyIcon fontSize="medium" />, color: '#FB8C00' },
+    { title: 'L1 Scheduled Candidates', value: l1ScheduledCandidates, icon: <CalendarTodayIcon fontSize="medium" />, color: '#8E24AA' },
+    { title: 'L1 Pending Candidates', value: l1PendingCandidates, icon: <HourglassEmptyIcon fontSize="medium" />, color: '#FFB300' },
+    { title: 'L2 Scheduled Candidates', value: l2ScheduledCandidates, icon: <CalendarTodayIcon fontSize="medium" />, color: '#388E3C' },
+    { title: 'L2 Pending Candidates', value: l2PendingCandidates, icon: <HourglassEmptyIcon fontSize="medium" />, color: '#FFB300' },
+    { title: 'Selected Candidates', value: selectedCandidates, icon: <CheckCircleIcon fontSize="medium" />, color: '#FFD700' },
+    { title: 'Rejected Candidates', value: rejectedCandidates, icon: <CancelIcon fontSize="medium" />, color: '#E53935' },
   ];
 
   const [loaded, setLoaded] = useState(false);
@@ -112,44 +112,61 @@ const OverviewRecruitmentPage = () => {
 
   return (
     <Box sx={{ width: '100%', padding: '20px' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <Typography variant="h4" gutterBottom>
-          Recruitment Overview
-        </Typography>
-        <IconButton color="primary" onClick={() => window.location.reload()}>
-          <RefreshIcon />
-        </IconButton>
+      <Box sx={{ backgroundColor: '#1E88E5', color: 'white', padding: '10px', borderRadius: '4px', marginBottom: '20px', position: 'relative' }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+          <Typography variant="h4" gutterBottom>
+            Recruitment Overview
+          </Typography>
+          <IconButton color="inherit" onClick={() => window.location.reload()} sx={{ position: 'absolute', right: '10px' }}>
+            <RefreshIcon />
+          </IconButton>
+        </Box>
       </Box>
-      <Grid container spacing={2}>
-        {cards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-            <Card
-              sx={{
-                backgroundColor: card.color,
-                color: 'white',
-                transition: 'transform 0.3s, box-shadow 0.3s',
-                transform: loaded ? 'scale(1)' : 'scale(0.9)',
-                boxShadow: loaded ? 6 : 0,
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: 6,
-                },
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6" component="div">
-                  {card.icon} {card.title}
-                </Typography>
-                <Typography variant="h4">
-                  {card.value}
-                </Typography>
-              </CardContent>
-            </Card>
+      <Box sx={{ display: 'flex', gap: '20px' }}>
+        <Box sx={{ flex: 1 }}>
+          <Box sx={{ width: '100%', height: '400px' }}>
+            <Pie data={data} options={options} />
+          </Box>
+        </Box>
+        <Divider orientation="vertical" flexItem />
+        <Box sx={{ flex: 1 }}>
+          <Grid container spacing={2}>
+            {cards.map((card, index) => (
+              <Grid item xs={12} sm={4} key={index}>
+                <Card
+                  sx={{
+                    backgroundColor: card.color,
+                    color: 'white',
+                    height: '150px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    transition: 'transform 0.3s, box-shadow 0.3s',
+                    transform: loaded ? 'scale(1)' : 'scale(0.9)',
+                    boxShadow: loaded ? 6 : 0,
+                    '&:hover': {
+                      transform: 'scale(1.05)',
+                      boxShadow: 6,
+                    },
+                  }}
+                >
+                  <CardContent sx={{ textAlign: 'center', padding: '8px' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px' }}>
+                      {card.icon}
+                      <Typography variant="body1" component="div">
+                        {card.title}
+                      </Typography>
+                    </Box>
+                    <Typography variant="h5" sx={{ fontSize: '1.5rem' }}>
+                      {card.value}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
-        ))}
-      </Grid>
-      <Box sx={{ width: '100%', height: '400px', marginTop: '20px' }}>
-        <Pie data={data} options={options} />
+        </Box>
       </Box>
     </Box>
   );
