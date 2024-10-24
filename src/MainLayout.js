@@ -15,7 +15,7 @@ import FreeSlotPage from './recruitment/FreeSlotPage';
 import BookedSlotPage from './recruitment/BookedSlotPage';
 import RequestSlotPage from './recruitment/RequestSlotPage';
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 
 const MainLayout = ({ onLogout, user, users, setUsers }) => {
   return (
