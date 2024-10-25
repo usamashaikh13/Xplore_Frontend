@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, Select, MenuItem } from '@mui/material';
+import './ReserveSlotPage.css';
 
 const ReserveSlotPage = () => {
   const [candidates, setCandidates] = useState([]);
@@ -34,6 +34,45 @@ const ReserveSlotPage = () => {
         l1Time: '11:00 AM',
         l1Feedback: 'No-Show',
       },
+      {
+        dateTimeCreated: '2024-10-24 09:30 AM',
+        name: 'Rahul Verma',
+        email: 'rahul.verma@example.com',
+        totalExperience: '6 years',
+        relevantExperience: '4 years',
+        skillset: ['SAP HANA', 'SAP BW'],
+        l1Status: 'Completed',
+        l1Interviewer: 'Suresh Patel',
+        l1Date: '2024-10-25',
+        l1Time: '09:30 AM',
+        l1Feedback: 'Selected',
+      },
+      {
+        dateTimeCreated: '2024-10-24 01:00 PM',
+        name: 'Neha Gupta',
+        email: 'neha.gupta@example.com',
+        totalExperience: '3 years',
+        relevantExperience: '2 years',
+        skillset: ['SAP SD', 'SAP CRM'],
+        l1Status: 'Scheduled',
+        l1Interviewer: 'Meena Rao',
+        l1Date: '2024-10-26',
+        l1Time: '01:00 PM',
+        l1Feedback: 'Pending',
+      },
+      {
+        dateTimeCreated: '2024-10-25 08:00 AM',
+        name: 'Vikram Singh',
+        email: 'vikram.singh@example.com',
+        totalExperience: '7 years',
+        relevantExperience: '5 years',
+        skillset: ['SAP PP', 'SAP QM'],
+        l1Status: 'Pending',
+        l1Interviewer: 'Anita Desai',
+        l1Date: '2024-10-27',
+        l1Time: '08:00 AM',
+        l1Feedback: 'Pending',
+      },
     ]);
   }, []);
 
@@ -43,102 +82,100 @@ const ReserveSlotPage = () => {
     setCandidates(updatedCandidates);
   };
 
-  const getStatusColor = (status) => {
+  const getRowClass = (status) => {
     switch (status) {
       case 'Scheduled':
-        return '#43A047'; // Green
+        return 'scheduled-row';
       case 'Pending':
-        return '#FB8C00'; // Orange
+        return 'pending-row';
       case 'Completed':
-        return '#1E88E5'; // Blue
+        return 'completed-row';
       default:
-        return '#000000'; // Black
+        return '';
     }
   };
 
   return (
-    <Box sx={{ padding: '20px' }}>
-      <Typography variant="h4" gutterBottom sx={{ textAlign: 'center', marginBottom: '20px' }}>
-        Candidate List
-      </Typography>
-      <TableContainer component={Paper} sx={{ maxHeight: 400, borderRadius: '8px' }}>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              <TableCell>Date Time Created</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Total Experience</TableCell>
-              <TableCell>Relevant Experience</TableCell>
-              <TableCell>Skillset</TableCell>
-              <TableCell>L1 Status</TableCell>
-              <TableCell>L1 Interviewer</TableCell>
-              <TableCell>L1 Date</TableCell>
-              <TableCell>L1 Time</TableCell>
-              <TableCell>L1 Feedback</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+    <div className="container">
+      <h1 className="title">Candidate List</h1>
+      <div className="table-container">
+        <table className="custom-table">
+          <thead>
+            <tr>
+              <th>Date Time Created</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Total Experience</th>
+              <th>Relevant Experience</th>
+              <th>Skillset</th>
+              <th>L1 Status</th>
+              <th>L1 Interviewer</th>
+              <th>L1 Date</th>
+              <th>L1 Time</th>
+              <th>L1 Feedback</th>
+            </tr>
+          </thead>
+          <tbody>
             {candidates.map((candidate, index) => (
-              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f9f9f9' : '#ffffff' }}>
-                <TableCell>{candidate.dateTimeCreated}</TableCell>
-                <TableCell>{candidate.name}</TableCell>
-                <TableCell>{candidate.email}</TableCell>
-                <TableCell>{candidate.totalExperience}</TableCell>
-                <TableCell>{candidate.relevantExperience}</TableCell>
-                <TableCell>{candidate.skillset.join(', ')}</TableCell>
-                <TableCell>
-                  <Select
+              <tr key={index} className={getRowClass(candidate.l1Status)}>
+                <td>{candidate.dateTimeCreated}</td>
+                <td>{candidate.name}</td>
+                <td>{candidate.email}</td>
+                <td>{candidate.totalExperience}</td>
+                <td>{candidate.relevantExperience}</td>
+                <td>{candidate.skillset.join(', ')}</td>
+                <td>
+                  <select
                     value={candidate.l1Status}
                     onChange={(e) => handleInputChange(index, 'l1Status', e.target.value)}
-                    fullWidth
-                    sx={{ color: getStatusColor(candidate.l1Status) }}
+                    className="status-select"
                   >
-                    <MenuItem value="Scheduled" sx={{ color: '#43A047' }}>Scheduled</MenuItem>
-                    <MenuItem value="Pending" sx={{ color: '#FB8C00' }}>Pending</MenuItem>
-                    <MenuItem value="Completed" sx={{ color: '#1E88E5' }}>Completed</MenuItem>
-                  </Select>
-                </TableCell>
-                <TableCell>
-                  <TextField
+                    <option value="Scheduled" className="status-scheduled">Scheduled</option>
+                    <option value="Pending" className="status-pending">Pending</option>
+                    <option value="Completed" className="status-completed">Completed</option>
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="text"
                     value={candidate.l1Interviewer}
                     onChange={(e) => handleInputChange(index, 'l1Interviewer', e.target.value)}
-                    fullWidth
+                    className="input-field"
                   />
-                </TableCell>
-                <TableCell>
-                  <TextField
+                </td>
+                <td>
+                  <input
                     type="date"
                     value={candidate.l1Date}
                     onChange={(e) => handleInputChange(index, 'l1Date', e.target.value)}
-                    fullWidth
+                    className="input-field"
                   />
-                </TableCell>
-                <TableCell>
-                  <TextField
+                </td>
+                <td>
+                  <input
                     type="time"
                     value={candidate.l1Time}
                     onChange={(e) => handleInputChange(index, 'l1Time', e.target.value)}
-                    fullWidth
+                    className="input-field"
                   />
-                </TableCell>
-                <TableCell>
-                  <Select
+                </td>
+                <td>
+                  <select
                     value={candidate.l1Feedback}
                     onChange={(e) => handleInputChange(index, 'l1Feedback', e.target.value)}
-                    fullWidth
+                    className="feedback-select"
                   >
-                    <MenuItem value="Pass" sx={{ color: 'green' }}>Pass</MenuItem>
-                    <MenuItem value="Fail" sx={{ color: 'red' }}>Fail</MenuItem>
-                    <MenuItem value="No-Show" sx={{ color: 'orange' }}>No-Show</MenuItem>
-                  </Select>
-                </TableCell>
-              </TableRow>
+                    <option value="Selected" className="feedback-pass">Selected</option>
+                    <option value="Rejected" className="feedback-fail">Rejected</option>
+                    <option value="No-Show" className="feedback-no-show">No-Show</option>
+                  </select>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Box>
+          </tbody>
+        </table>
+      </div>
+    </div>
   );
 };
 

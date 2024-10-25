@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, FormControl, InputLabel, Select, MenuItem, TextField, Chip, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import { Box, Typography, TextField, FormControl, InputLabel, Select, MenuItem, Chip, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import ClearIcon from '@mui/icons-material/Clear';
+import './FreeSlotPage.css';
 
 const FreeSlotPage = () => {
   const [freeSlots, setFreeSlots] = useState([]);
@@ -66,101 +67,115 @@ const FreeSlotPage = () => {
   };
 
   return (
-    <Box sx={{ padding: '20px' }}>
-      <Typography variant="h4" gutterBottom>
-        Free Slots Overview
-      </Typography>
-      <Box sx={{ display: 'flex', gap: '20px', marginBottom: '20px' }}>
-        <Autocomplete
-          multiple
-          options={['SAP Basis', 'SAP ABAP', 'SAP FICO', 'SAP MM', 'SAP SD']}
-          value={selectedSkills}
-          onChange={(event, newValue) => setSelectedSkills(newValue)}
-          renderTags={(value, getTagProps) =>
-            value.map((option, index) => (
-              <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-            ))
-          }
-          renderInput={(params) => (
-            <TextField {...params} variant="outlined" label="Skills" placeholder="Select skills" />
-          )}
-          fullWidth
-        />
-        <FormControl fullWidth>
-          <InputLabel>Experience</InputLabel>
-          <Select
-            value={selectedExperience}
-            onChange={(e) => setSelectedExperience(e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="3 years">3 years</MenuItem>
-            <MenuItem value="4 years">4 years</MenuItem>
-            <MenuItem value="5 years">5 years</MenuItem>
-            <MenuItem value="6 years">6 years</MenuItem>
-            <MenuItem value="7 years">7 years</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel>Category</InputLabel>
-          <Select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="L1">L1</MenuItem>
-            <MenuItem value="L2">L2</MenuItem>
-            <MenuItem value="Other">Other</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl fullWidth>
-          <InputLabel>Month</InputLabel>
-          <Select
-            value={selectedMonth}
-            onChange={(e) => setSelectedMonth(e.target.value)}
-          >
-            <MenuItem value="">All</MenuItem>
-            <MenuItem value="1">January</MenuItem>
-            <MenuItem value="2">February</MenuItem>
-            <MenuItem value="3">March</MenuItem>
-            <MenuItem value="4">April</MenuItem>
-            <MenuItem value="5">May</MenuItem>
-            <MenuItem value="6">June</MenuItem>
-            <MenuItem value="7">July</MenuItem>
-            <MenuItem value="8">August</MenuItem>
-            <MenuItem value="9">September</MenuItem>
-            <MenuItem value="10">October</MenuItem>
-            <MenuItem value="11">November</MenuItem>
-            <MenuItem value="12">December</MenuItem>
-          </Select>
-        </FormControl>
-        <IconButton onClick={clearFilters}>
+    <div className="container">
+      <h1 className="title">Free Slots Overview</h1>
+      <div className="filters-container">
+        <div className="filter-item">
+          <Autocomplete
+            multiple
+            options={['SAP Basis', 'SAP ABAP', 'SAP FICO', 'SAP MM', 'SAP SD']}
+            value={selectedSkills}
+            onChange={(event, newValue) => setSelectedSkills(newValue)}
+            renderTags={(value, getTagProps) =>
+              value.map((option, index) => (
+                <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+              ))
+            }
+            renderInput={(params) => (
+              <TextField {...params} variant="outlined" label="Skills" placeholder="Select skills" />
+            )}
+          />
+        </div>
+        <div className="filter-item">
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel>Experience</InputLabel>
+            <Select
+              value={selectedExperience}
+              onChange={(e) => setSelectedExperience(e.target.value)}
+              label="Experience"
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="3 years">3 years</MenuItem>
+              <MenuItem value="4 years">4 years</MenuItem>
+              <MenuItem value="5 years">5 years</MenuItem>
+              <MenuItem value="6 years">6 years</MenuItem>
+              <MenuItem value="7 years">7 years</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className="filter-item">
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel>Category</InputLabel>
+            <Select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              label="Category"
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="L1">L1</MenuItem>
+              <MenuItem value="L2">L2</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <div className="filter-item">
+          <FormControl variant="outlined" fullWidth>
+            <InputLabel>Month</InputLabel>
+            <Select
+              value={selectedMonth}
+              onChange={(e) => setSelectedMonth(e.target.value)}
+              label="Month"
+            >
+              <MenuItem value="">All</MenuItem>
+              <MenuItem value="1">January</MenuItem>
+              <MenuItem value="2">February</MenuItem>
+              <MenuItem value="3">March</MenuItem>
+              <MenuItem value="4">April</MenuItem>
+              <MenuItem value="5">May</MenuItem>
+              <MenuItem value="6">June</MenuItem>
+              <MenuItem value="7">July</MenuItem>
+              <MenuItem value="8">August</MenuItem>
+              <MenuItem value="9">September</MenuItem>
+              <MenuItem value="10">October</MenuItem>
+              <MenuItem value="11">November</MenuItem>
+              <MenuItem value="12">December</MenuItem>
+            </Select>
+          </FormControl>
+        </div>
+        <IconButton onClick={clearFilters} className="clear-button">
           <ClearIcon />
         </IconButton>
-      </Box>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Interviewer</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Skills</TableCell>
-              <TableCell>Experience</TableCell>
-              <TableCell>Category</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+      </div>
+      <div className="table-container">
+        <table className="custom-table">
+          <thead>
+            <tr>
+              <th>Interviewer</th>
+              <th>Email</th>
+              <th>Date</th>
+              <th>Time</th>
+              <th>Duration</th>
+              <th>Skills</th>
+              <th>Experience</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
             {filteredSlots.map((slot, index) => (
-              <TableRow key={index} sx={{ backgroundColor: index % 2 === 0 ? '#f5f5f5' : '#ffffff' }} onClick={() => handleRowClick(slot)}>
-                <TableCell>{slot.interviewer}</TableCell>
-                <TableCell>{slot.email}</TableCell>
-                <TableCell>{slot.skills.join(', ')}</TableCell>
-                <TableCell>{slot.experience}</TableCell>
-                <TableCell>{slot.category}</TableCell>
-              </TableRow>
+              <tr key={index} className={index % 2 === 0 ? 'even-row' : 'odd-row'} onClick={() => handleRowClick(slot)}>
+                <td>{slot.interviewer}</td>
+                <td>{slot.email}</td>
+                <td>{slot.date}</td>
+                <td>{slot.time}</td>
+                <td>{slot.duration}</td>
+                <td>{slot.skills.join(', ')}</td>
+                <td>{slot.experience}</td>
+                <td>{slot.category}</td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+          </tbody>
+        </table>
+      </div>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Slot Details</DialogTitle>
         <DialogContent>
@@ -172,7 +187,7 @@ const FreeSlotPage = () => {
           <Button onClick={handleCloseDialog}>Close</Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </div>
   );
 };
 
