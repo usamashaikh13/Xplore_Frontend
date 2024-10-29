@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { Box, Typography, Grid, Card, CardContent, IconButton, Divider } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, Divider } from '@mui/material';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import GroupIcon from '@mui/icons-material/Group';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import RefreshIcon from '@mui/icons-material/Refresh';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -117,9 +116,6 @@ const OverviewRecruitmentPage = () => {
           <Typography variant="h4" gutterBottom>
             Recruitment Overview
           </Typography>
-          <IconButton color="inherit" onClick={() => window.location.reload()} sx={{ position: 'absolute', right: '10px' }}>
-            <RefreshIcon />
-          </IconButton>
         </Box>
       </Box>
       <Box sx={{ display: 'flex', gap: '20px' }}>

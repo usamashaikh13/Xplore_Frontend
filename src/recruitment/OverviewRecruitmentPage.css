@@ -9,8 +9,8 @@
 }
 
 .header {
-  background-color: #1e88e5;
-  color: white;
+  background-color: transparent;
+  color: #1a237e;
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 20px;
@@ -25,14 +25,10 @@
   font-size: 2.5rem;
 }
 
-.refresh-button {
-  position: absolute;
-  right: 10px;
-}
-
 .content {
   display: flex;
   gap: 20px;
+  flex-wrap: wrap; /* Added for responsiveness */
 }
 
 .chart-container {
@@ -80,4 +76,15 @@
 .card-value {
   font-size: 1.5rem;
   font-family: 'Great Vibes', cursive;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .content {
+    flex-direction: column;
+  }
+
+  .chart-container, .cards-container {
+    width: 100%;
+  }
 }
