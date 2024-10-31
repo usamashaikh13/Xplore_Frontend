@@ -1,181 +1,90 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
+import { useReactTable, getCoreRowModel, flexRender } from '@tanstack/react-table';
+import { Typography, Container, Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import './ReserveSlotPage.css';
 
 const ReserveSlotPage = () => {
-  const [candidates, setCandidates] = useState([]);
+  const data = useMemo(() => [
+    {
+      dateTimeCreated: '2024-10-22 10:00 AM',
+      name: 'Amit Sharma',
+      email: 'amit.sharma@example.com',
+      totalExperience: '5 years',
+      relevantExperience: '3 years',
+      skillset: ['SAP Basis', 'SAP ABAP'],
+      l1Interviewer: 'Ravi Kumar',
+      l1Date: '2024-10-23',
+      l1Time: '10:00 AM',
+    },
+    // Add more candidates as needed
+  ], []);
 
-  useEffect(() => {
-    // Fetch candidates from the server or API
-    // For demonstration, using static data
-    setCandidates([
-      {
-        dateTimeCreated: '2024-10-22 10:00 AM',
-        name: 'Amit Sharma',
-        email: 'amit.sharma@example.com',
-        totalExperience: '5 years',
-        relevantExperience: '3 years',
-        skillset: ['SAP Basis', 'SAP ABAP'],
-        l1Status: 'Scheduled',
-        l1Interviewer: 'Ravi Kumar',
-        l1Date: '2024-10-23',
-        l1Time: '10:00 AM',
-        l1Feedback: 'Pass',
-      },
-      {
-        dateTimeCreated: '2024-10-23 11:00 AM',
-        name: 'Priya Singh',
-        email: 'priya.singh@example.com',
-        totalExperience: '4 years',
-        relevantExperience: '2 years',
-        skillset: ['SAP FICO', 'SAP MM'],
-        l1Status: 'Pending',
-        l1Interviewer: 'Anjali Mehta',
-        l1Date: '2024-10-24',
-        l1Time: '11:00 AM',
-        l1Feedback: 'No-Show',
-      },
-      {
-        dateTimeCreated: '2024-10-24 09:30 AM',
-        name: 'Rahul Verma',
-        email: 'rahul.verma@example.com',
-        totalExperience: '6 years',
-        relevantExperience: '4 years',
-        skillset: ['SAP HANA', 'SAP BW'],
-        l1Status: 'Completed',
-        l1Interviewer: 'Suresh Patel',
-        l1Date: '2024-10-25',
-        l1Time: '09:30 AM',
-        l1Feedback: 'Selected',
-      },
-      {
-        dateTimeCreated: '2024-10-24 01:00 PM',
-        name: 'Neha Gupta',
-        email: 'neha.gupta@example.com',
-        totalExperience: '3 years',
-        relevantExperience: '2 years',
-        skillset: ['SAP SD', 'SAP CRM'],
-        l1Status: 'Scheduled',
-        l1Interviewer: 'Meena Rao',
-        l1Date: '2024-10-26',
-        l1Time: '01:00 PM',
-        l1Feedback: 'Pending',
-      },
-      {
-        dateTimeCreated: '2024-10-25 08:00 AM',
-        name: 'Vikram Singh',
-        email: 'vikram.singh@example.com',
-        totalExperience: '7 years',
-        relevantExperience: '5 years',
-        skillset: ['SAP PP', 'SAP QM'],
-        l1Status: 'Pending',
-        l1Interviewer: 'Anita Desai',
-        l1Date: '2024-10-27',
-        l1Time: '08:00 AM',
-        l1Feedback: 'Pending',
-      },
-    ]);
-  }, []);
+  const columns = useMemo(() => [
+    { accessorKey: 'dateTimeCreated', header: 'Date Time Created' },
+    { accessorKey: 'name', header: 'Name' },
+    { accessorKey: 'email', header: 'Email' },
+    { accessorKey: 'totalExperience', header: 'Total Experience' },
+    { accessorKey: 'relevantExperience', header: 'Relevant Experience' },
+    { accessorKey: 'skillset', header: 'Skillset', cell: info => info.getValue().join(', ') },
+    { accessorKey: 'l1Interviewer', header: 'L1 Interviewer' },
+    { accessorKey: 'l1Date', header: 'L1 Date' },
+    { accessorKey: 'l1Time', header: 'L1 Time' },
+  ], []);
 
-  const handleInputChange = (index, field, value) => {
-    const updatedCandidates = [...candidates];
-    updatedCandidates[index][field] = value;
-    setCandidates(updatedCandidates);
-  };
-
-  const getRowClass = (status) => {
-    switch (status) {
-      case 'Scheduled':
-        return 'scheduled-row';
-      case 'Pending':
-        return 'pending-row';
-      case 'Completed':
-        return 'completed-row';
-      default:
-        return '';
-    }
-  };
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
 
   return (
-    <div className="container">
-      <h1 className="title">Candidate List</h1>
-      <div className="table-container">
-        <table className="custom-table">
-          <thead>
-            <tr>
-              <th>Date Time Created</th>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Total Experience</th>
-              <th>Relevant Experience</th>
-              <th>Skillset</th>
-              <th>L1 Status</th>
-              <th>L1 Interviewer</th>
-              <th>L1 Date</th>
-              <th>L1 Time</th>
-              <th>L1 Feedback</th>
-            </tr>
-          </thead>
-          <tbody>
-            {candidates.map((candidate, index) => (
-              <tr key={index} className={getRowClass(candidate.l1Status)}>
-                <td>{candidate.dateTimeCreated}</td>
-                <td>{candidate.name}</td>
-                <td>{candidate.email}</td>
-                <td>{candidate.totalExperience}</td>
-                <td>{candidate.relevantExperience}</td>
-                <td>{candidate.skillset.join(', ')}</td>
-                <td>
-                  <select
-                    value={candidate.l1Status}
-                    onChange={(e) => handleInputChange(index, 'l1Status', e.target.value)}
-                    className="status-select"
-                  >
-                    <option value="Scheduled" className="status-scheduled">Scheduled</option>
-                    <option value="Pending" className="status-pending">Pending</option>
-                    <option value="Completed" className="status-completed">Completed</option>
-                  </select>
-                </td>
-                <td>
-                  <input
-                    type="text"
-                    value={candidate.l1Interviewer}
-                    onChange={(e) => handleInputChange(index, 'l1Interviewer', e.target.value)}
-                    className="input-field"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="date"
-                    value={candidate.l1Date}
-                    onChange={(e) => handleInputChange(index, 'l1Date', e.target.value)}
-                    className="input-field"
-                  />
-                </td>
-                <td>
-                  <input
-                    type="time"
-                    value={candidate.l1Time}
-                    onChange={(e) => handleInputChange(index, 'l1Time', e.target.value)}
-                    className="input-field"
-                  />
-                </td>
-                <td>
-                  <select
-                    value={candidate.l1Feedback}
-                    onChange={(e) => handleInputChange(index, 'l1Feedback', e.target.value)}
-                    className="feedback-select"
-                  >
-                    <option value="Selected" className="feedback-pass">Selected</option>
-                    <option value="Rejected" className="feedback-fail">Rejected</option>
-                    <option value="No-Show" className="feedback-no-show">No-Show</option>
-                  </select>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 6 }}>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ color: '#1565C0', fontWeight: 'bold', textAlign: 'center', mb: 3 }}>
+        Reserve Slot
+      </Typography>
+      <Box sx={{ overflowX: 'auto' }}>
+        <TableContainer component={Paper} sx={{ borderRadius: 3, boxShadow: 3, backgroundColor: '#fafafa' }}>
+          <Table aria-label="reserve slot table" sx={{ minWidth: 650 }}>
+            <TableHead>
+              {table.getHeaderGroups().map(headerGroup => (
+                <TableRow key={headerGroup.id} sx={{ backgroundColor: '#1976d2' }}>
+                  {headerGroup.headers.map(header => (
+                    <TableCell
+                      key={header.id}
+                      align="left"
+                      sx={{ color: 'white', fontWeight: 'bold', fontSize: '1rem', padding: '12px', whiteSpace: 'nowrap' }}
+                    >
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableHead>
+            <TableBody>
+              {table.getRowModel().rows.map(row => (
+                <TableRow
+                  key={row.id}
+                  sx={{
+                    '&:hover': { backgroundColor: '#e3f2fd', cursor: 'pointer' },
+                    transition: 'background-color 0.3s ease',
+                  }}
+                >
+                  {row.getVisibleCells().map(cell => (
+                    <TableCell
+                      key={cell.id}
+                      align="left"
+                      sx={{ fontSize: '0.95rem', color: '#424242', padding: '10px' }}
+                    >
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Container>
   );
 };
 

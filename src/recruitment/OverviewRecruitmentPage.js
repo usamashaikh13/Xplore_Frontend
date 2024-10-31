@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Pie } from 'react-chartjs-2';
-import { Box, Typography, Grid, Card, CardContent, IconButton, Divider } from '@mui/material';
+import { Box, Typography, Grid, Card, CardContent, IconButton, Divider, useTheme } from '@mui/material';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import GroupIcon from '@mui/icons-material/Group';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
@@ -12,6 +12,8 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const OverviewRecruitmentPage = () => {
+  const theme = useTheme();
+
   const totalCandidates = 100;
   const totalScheduledCandidates = 50;
   const totalPendingCandidates = 25;
@@ -46,24 +48,24 @@ const OverviewRecruitmentPage = () => {
           rejectedCandidates,
         ],
         backgroundColor: [
-          '#43A047',
-          '#FB8C00',
-          '#8E24AA',
-          '#FFB300',
-          '#388E3C',
-          '#FFB300',
-          '#FFD700',
-          '#E53935',
+          '#4caf50', // Green
+          '#ff9800', // Orange
+          '#9c27b0', // Purple
+          '#ffeb3b', // Yellow
+          '#3f51b5', // Indigo
+          '#00bcd4', // Cyan
+          '#8bc34a', // Light Green
+          '#f44336', // Red
         ],
         hoverBackgroundColor: [
-          '#66BB6A',
-          '#FFB74D',
-          '#BA68C8',
-          '#FFD54F',
-          '#66BB6A',
-          '#FFD54F',
-          '#FFEB3B',
-          '#EF5350',
+          '#66bb6a',
+          '#ffb74d',
+          '#ba68c8',
+          '#fff176',
+          '#5c6bc0',
+          '#4dd0e1',
+          '#aed581',
+          '#ef5350',
         ],
       },
     ],
@@ -111,8 +113,8 @@ const OverviewRecruitmentPage = () => {
   }, []);
 
   return (
-    <Box sx={{ width: '100%', padding: '20px' }}>
-      <Box sx={{ backgroundColor: '#1E88E5', color: 'white', padding: '10px', borderRadius: '4px', marginBottom: '20px', position: 'relative' }}>
+    <Box sx={{ width: '100%', padding: '20px', backgroundColor: theme.palette.background.default }}>
+      <Box sx={{ backgroundColor: theme.palette.primary.main, color: theme.palette.common.white, padding: '10px', borderRadius: '4px', marginBottom: '20px', position: 'relative' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Typography variant="h4" gutterBottom>
             Recruitment Overview
@@ -122,17 +124,17 @@ const OverviewRecruitmentPage = () => {
           </IconButton>
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', gap: '20px' }}>
+      <Box sx={{ display: 'flex', gap: '20px', flexDirection: { xs: 'column', md: 'row' } }}>
         <Box sx={{ flex: 1 }}>
           <Box sx={{ width: '100%', height: '400px' }}>
             <Pie data={data} options={options} />
           </Box>
         </Box>
-        <Divider orientation="vertical" flexItem />
+        <Divider orientation="vertical" flexItem sx={{ display: { xs: 'none', md: 'block' } }} />
         <Box sx={{ flex: 1 }}>
           <Grid container spacing={2}>
             {cards.map((card, index) => (
-              <Grid item xs={12} sm={4} key={index}>
+              <Grid item xs={12} sm={6} md={4} key={index}>
                 <Card
                   sx={{
                     backgroundColor: card.color,

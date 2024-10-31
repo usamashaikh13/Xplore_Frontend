@@ -20,10 +20,10 @@
   align-items: center;
 }
 
-.header h4 {
+/* .header h4 {
   font-family: 'Great Vibes', cursive;
   font-size: 2.5rem;
-}
+} */
 
 .refresh-button {
   position: absolute;
@@ -33,6 +33,7 @@
 .content {
   display: flex;
   gap: 20px;
+  flex-direction: column;
 }
 
 .chart-container {

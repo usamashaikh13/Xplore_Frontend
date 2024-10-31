@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import format from 'date-fns/format';
 import addMinutes from 'date-fns/addMinutes';
 
-const ViewSlotsPage = ({ bookedSlots = [], setBookedSlots }) => { // Default to empty array
+const ViewSlotsPage = ({ bookedSlots = [], setBookedSlots }) => {
   const [open, setOpen] = useState(false);
   const [slotToDelete, setSlotToDelete] = useState(null);
 

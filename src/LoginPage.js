@@ -8,7 +8,7 @@ const LoginPage = ({ onLogin }) => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    
+
     // Define valid credentials for different roles
     const users = {
       admin: { password: 'adminPassword', role: 'admin' },
